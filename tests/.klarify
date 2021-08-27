@@ -1,0 +1,20 @@
+---
+structure:
+    "generated":
+        - "."
+categories:
+    mesh:
+        - Gateway
+        - VirtualService
+        - DestinationRule
+    network:
+        - NetworkPolicy
+    workload:
+        - DaemonSet
+        - Pod
+        - ConfigMap
+    rbac:
+        - ConfigMap
+        - ClusterRole
+        - ClusterRoleBiding
+        - ServiceAccount
