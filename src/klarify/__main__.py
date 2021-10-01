@@ -19,7 +19,7 @@ def parseArgs():
     parser.add_argument(
         'inputs',
         metavar='input.yaml',
-        nargs='+',
+        nargs='*',
         help='One or more yaml files to parse.'
     )
 
@@ -39,13 +39,21 @@ def parseArgs():
         help='Disable generation of kustomize files.'
     )
 
+    parser.add_argument(
+        '-c',
+        '--config',
+        dest='config',
+        action='store_true',
+        default=False,
+        help='Write default configuration file')
+
     return parser.parse_args()
 
 
 def readConfig() -> str:
     # Ensure config file
     if not (os.path.exists('.klarify')):
-        with open(os.path.join(os.path.dirname(__file__), '.klarify-default'), 'r') as inputfile:
+        with open(os.path.join(os.path.dirname(__file__), 'klarify.yaml'), 'r') as inputfile:
             content = inputfile.read()
         with open('.klarify', 'w') as outputfile:
             outputfile.write(content)
@@ -62,6 +70,9 @@ def main():
     kustomizer = StandardKustomizer(args.kustomize)
     parser = YamlParser()
 
+    if args.config or not args.inputs:
+        return
+
     for input in args.inputs:
         data = parser.parse(input)
         for resourceData in data:
@@ -70,6 +81,12 @@ def main():
             parser.place(r.body, r.path, r.fileName)
             #print(yaml.dump(config, explicit_start=True, default_flow_style=False))
     kustomizer.generateKustomizations()
+
+# TODO:
+# Only run kustomizer if there are inputs,
+# allow for no inputs to generate config file
+# update -c option to change configfile name
+# default is placed by simply running "klarify"
 
 
 # Using the special variable

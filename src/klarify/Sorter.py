@@ -28,18 +28,25 @@ class StandardSorter(Sorter):
         # Set defaults for mismatches
         path = "generated"
         sub = "unknown"
+        # print(f"Getting path for: {resource}")
         for destination in self.structure:
-            if self.matches(resource, self.structure[destination]):
+            # print(f"Checking {destination}")
+            if self.matches(resource, self.structure[destination], False):
                 path = destination
                 break
         for category in self.categories:
-            if self.matches(kind, self.categories[category]):
+            # print(f"Checking {category}")
+            if self.matches(kind, self.categories[category], True):
                 sub = category
                 break
         return f"{path}/{sub}"
 
-    def matches(self, resource: str, patterns: list) -> bool:
+    def matches(self, resource: str, patterns: list, exact: bool) -> bool:
         for pattern in patterns:
-            if re.search(pattern, resource):
+            if exact:
+                p = f"^{pattern}$"
+            else:
+                p = pattern
+            if re.search(p, resource):
                 return True
         return False

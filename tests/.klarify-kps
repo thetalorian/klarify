@@ -1,7 +1,13 @@
 ---
 structure:
-    "generated":
-        - "."
+    "generated/state-metrics":
+        - "kube-state-metrics"
+    "generated/prometheus":
+        - "kube-prometheus-stack-"
+    "generated/grafana":
+        - "kps-grafana"
+    "generated/node-exporter":
+        - "node-exporter"
 categories:
     mesh:
         - Gateway
@@ -32,4 +38,3 @@ categories:
     monitoring:
         - PrometheusRule
         - ServiceMonitor
-
